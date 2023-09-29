@@ -13,21 +13,49 @@
             top: 0;
             left: 0;
             z-index: -1; /* Place the canvas behind the content */
+            background-color: black;
+        }
+
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .content h1, .content p, .content a {
+            color: white;
+            text-decoration: none;
         }
     </style>
 </head>
 
 <body>
-    <h1>Your Page Content Goes Here</h1>
-    <p>This is your page content.</p>
-
     <canvas id="myCanvas" width="800" height="600"></canvas>
 
+    <div class="content">
+        <h1>Welcome to My Website</h1>
+        <p>Explore the following topics:</p>
+        <a href="Collatz.html">Collatz</a>
+        <a href="Mandelbrot.html">Mandelbrot</a>
+        <a href="Fibonacci.html">Fibonacci</a>
+        <a href="plus_lines.html">+ lines</a>
+        <a href="#" id="randomNumberLink">Random Number</a>
+    </div>
+
     <script>
-        // Your JavaScript code goes here
-        // ...
+        // Your canvas animation script goes here
 
         // Rest of your script
+
+        // Add an event listener to the random number link
+        document.getElementById('randomNumberLink').addEventListener('click', function() {
+            var randomNumber = Math.floor(Math.random() * 100); // Generates a random number between 0 and 99
+            alert('Random Number: ' + randomNumber);
+        });
 
         update(); // Start the animation loop
     </script>
