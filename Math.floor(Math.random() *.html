@@ -1,0 +1,94 @@
+<!doctype html>
+
+
+    
+    
+    Chaotic Dots
+    <style>
+        canvas {
+            background-color: black;
+        }
+    </style>
+
+
+    <canvas id="myCanvas" width="800" height="600"></canvas>
+
+    <script>
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+
+        const colors = ["#ff007f", "#39ff14"]; // Neon fuchsia and neon green
+
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function createDot() {
+            return {
+                x: random(0, canvas.width),
+                y: random(0, canvas.height),
+                radius: 5,
+                color: colors[random(0, 1)],
+                vx: (Math.random() - 0.5) * 2, // Random velocity between -1 and 1
+                vy: (Math.random() - 0.5) * 2
+            };
+        }
+
+        const dots = [];
+        const numDots = 50;
+
+        for (let i = 0; i < numDots; i++) {
+            dots.push(createDot());
+        }
+
+        function drawDot(dot) {
+            ctx.beginPath();
+            ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
+            ctx.fillStyle = dot.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function update() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (const dot of dots) {
+                drawDot(dot);
+                dot.x += dot.vx;
+                dot.y += dot.vy;
+
+                // Check for collision with canvas edges
+                if (dot.x - dot.radius < 0 || dot.x + dot.radius > canvas.width) {
+                    dot.vx *= -1;
+                }
+                if (dot.y - dot.radius < 0 || dot.y + dot.radius > canvas.height) {
+                    dot.vy *= -1;
+                }
+
+                // Check for collision with other dots
+                for (const otherDot of dots) {
+                    if (dot !== otherDot) {
+                        const dx = dot.x - otherDot.x;
+                        const dy = dot.y - otherDot.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < dot.radius + otherDot.radius) {
+                            // Collision detected, swap velocities
+                            const tempVx = dot.vx;
+                            const tempVy = dot.vy;
+                            dot.vx = otherDot.vx;
+                            dot.vy = otherDot.vy;
+                            otherDot.vx = tempVx;
+                            otherDot.vy = tempVy;
+                        }
+                    }
+                }
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        update();
+    </script>
+
+</!doctype>
