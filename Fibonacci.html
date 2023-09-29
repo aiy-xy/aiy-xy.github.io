@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fibonacci Sequence Visualization</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-end;
+            height: 100vh;
+            background-color: black;
+            color: #39FF14;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .fibonacci-container {
+            position: relative;
+            width: 800cm; /* 800cm represents 1000 for each centimeter */
+            height: 800cm;
+            background-color: black;
+        }
+
+        .neon-dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #39FF14; /* Neon Green */
+            animation: flash 1.5s infinite;
+        }
+
+        @keyframes flash {
+            0%, 50% {
+                background-color: #39FF14; /* Neon Green */
+            }
+            51%, 100% {
+                background-color: #FF007F; /* Neon Pink */
+            }
+        }
+
+        .sequence-display {
+            position: fixed;
+            top: 7px;
+            left: 7px;
+            color: unset;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="fibonacci-container"></div>
+
+    <div class="sequence-display"></div>
+
+    <script>
+        function fibonacci(n) {
+            const sequence = [0, 1];
+            for (let i = 2; i <= n; i++) {
+                sequence.push(sequence[i - 1] + sequence[i - 2]);
+            }
+            return sequence;
+        }
+
+        function plotFibonacci(n) {
+            const container = document.querySelector('.fibonacci-container');
+            container.innerHTML = ''; // Clear previous sequence
+
+            const sequence = fibonacci(n);
+            sequence.forEach((value, index) => {
+                const dot = document.createElement('div');
+                dot.className = 'neon-dot';
+                // Scale the position based on 1000 units per centimeter
+                dot.style.left = `${index * 20}px`; // 20 pixels represent 1000 units
+                dot.style.bottom = `${value / 1000 * 20}px`; // Scale the height for visibility
+                container.appendChild(dot);
+            });
+
+            const sequenceDisplay = document.querySelector('.sequence-display');
+            sequenceDisplay.innerText = sequence.join(' > ');
+
+            setTimeout(() => {
+                plotFibonacci(n + 1);
+            }, 1000); // Change every 1 second
+        }
+
+        plotFibonacci(1); // Start plotting from n=1 initially
+    </script>
+</body>
+
+</html>
